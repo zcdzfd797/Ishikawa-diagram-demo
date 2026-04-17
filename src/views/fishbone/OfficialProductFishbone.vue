@@ -93,16 +93,6 @@ function deepClone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
-function visitTree(node, visitor, depth, parent) {
-  const children = Array.isArray(node.children) ? node.children : [];
-
-  visitor(node, depth, parent);
-
-  children.forEach((child) => {
-    visitTree(child, visitor, depth + 1, node);
-  });
-}
-
 function assignNodeIds(tree, prefix) {
   function loop(node, depth, path) {
     node.id = prefix + "-" + path.join("-");
@@ -204,18 +194,6 @@ function buildGraphData(example) {
   return arrangeEdgeZIndex(graphData);
 }
 
-const engine = {
-  BRANCH_COLORS,
-  measureTextWidth,
-  withAlpha,
-  deepClone,
-  visitTree,
-  assignColorByBranch,
-  arrangeEdgeZIndex,
-  buildGraphData,
-  getOutsideLabelPlacement,
-};
-
 const ELEMENT_FONT =
   '"Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif';
 const GRAPH_FONT = ELEMENT_FONT;
@@ -314,23 +292,12 @@ export default {
       queueRender: null,
       handleResize: null,
       resizeObserver: null,
-      example: example,};
+      example,
+    };
   },
   computed: {
     direction() {
       return (this.example && this.example.defaultDirection) || "RL";
-    },
-  },
-  watch: {
-    example() {
-      if (this.queueRender) {
-        this.queueRender();
-      }
-    },
-    direction() {
-      if (this.queueRender) {
-        this.queueRender();
-      }
     },
   },
   mounted() {
@@ -651,7 +618,7 @@ export default {
       const minHeight = settings.minHeight || 32;
       const paddingX = settings.paddingX || 12;
       const paddingY = settings.paddingY || 8;
-      const textWidth = engine.measureTextWidth(label, {
+      const textWidth = measureTextWidth(label, {
         fontSize: fontSize,
         fontWeight: settings.fontWeight || 400,
         fontFamily: settings.fontFamily || GRAPH_FONT,
@@ -805,7 +772,7 @@ export default {
       const markerRole = nodeData.markerRole;
       const styleOptions = example.styleOptions || {};
       const decorationOptions = example.decorationOptions || {};
-      const placement = engine.getOutsideLabelPlacement(direction);
+      const placement = getOutsideLabelPlacement(direction);
       const isProductStyle = example.renderKey === "product" || example.renderKey === "product-headtail";
       const baseStyle = {
         radius: 8,
@@ -882,7 +849,7 @@ export default {
 
         return Object.assign(baseStyle, {
           size: [
-            engine.measureTextWidth(label, {
+            measureTextWidth(label, {
               fontSize: 24,
               fontWeight: 700,
               fontFamily: CARD_FONT,
@@ -908,7 +875,7 @@ export default {
       if (depth === 1) {
         const depthOneStyle = {
           size: [
-            engine.measureTextWidth(label, {
+            measureTextWidth(label, {
               fontSize: 18,
               fontWeight: isProductStyle ? 600 : 400,
               fontFamily: CARD_FONT,
@@ -930,7 +897,7 @@ export default {
             labelFillOpacity: 0.9,
             fillOpacity: example.renderKey === "product-headtail" ? 0.78 : 0.6,
             lineWidth: example.renderKey === "product-headtail" ? 2.3 : 2,
-            stroke: example.renderKey === "product-headtail" ? engine.withAlpha(color, 0.92) : "#252525",
+            stroke: example.renderKey === "product-headtail" ? withAlpha(color, 0.92) : "#252525",
           });
         }
 
@@ -995,7 +962,7 @@ export default {
       return base;
     },
     createGraphConfig(stage, example, direction) {
-      const graphData = engine.buildGraphData(example);
+      const graphData = buildGraphData(example);
       if (example.renderKey === "anti" || example.renderKey === "product" || example.renderKey === "product-headtail") {
         return this.createSceneConfig(stage, example, direction, graphData);
       }
