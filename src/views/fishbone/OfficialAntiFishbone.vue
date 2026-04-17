@@ -209,7 +209,7 @@ const example = {
   stageHeight: 760,
   behaviors: ["zoom-canvas", "drag-canvas"],
   layoutOptions: {
-    hGap: 40,
+    hGap: 44,
     vGap: 60,
     padding: 10,
   },
@@ -221,52 +221,35 @@ const example = {
     leafNodeWidth: 2,
   },
   tree: {
-    label: "克服拖延与执行焦虑",
+    label: "生产效率低根本原因分析",
     children: [
       {
-        label: "完美主义倾向",
-        children: [
-          { label: "正确评估任务的真实难度" },
-          { label: "先完成再持续打磨" },
-          { label: "不要把第一次输出要求成最终版本" },
-        ],
+        label: "环境",
+        children: [{ label: "车间湿度过高" }, { label: "车间温度波动" }],
       },
       {
-        label: "提高专注度",
-        children: [
-          { label: "番茄工作法" },
-          { label: "限时限量一次只推进一个关键动作" },
-          { label: "主动减少消息打断与无效会议干扰" },
-        ],
+        label: "物料",
+        children: [{ label: "部分原料不合格" }, { label: "原材料批次差异" }],
       },
       {
-        label: "设定清晰任务流程",
-        children: [
-          { label: "先拆成今天就能完成的最小动作" },
-          { label: "对完成事项建立优先级排序" },
-          { label: "收集整理排序执行复盘形成闭环" },
-        ],
+        label: "人员",
+        children: [{ label: "员工技能不足" }, { label: "操作员未受培训" }],
       },
       {
-        label: "建立正向反馈",
-        children: [
-          { label: "给阶段成果安排即时奖励" },
-          { label: "将抽象目标转成可见进度条" },
-          { label: "与同伴公开同步进展形成推动" },
-        ],
+        label: "检测",
+        children: [{ label: "检测方法误差大" }, { label: "量具误差大" }],
       },
       {
-        label: "放松与接纳",
-        children: [
-          { label: "更关注过程而非一次结果" },
-          { label: "让行动由需求驱动而不是焦虑驱动" },
-          { label: "接受自己会慢热但不会停下" },
-        ],
+        label: "流程",
+        children: [{ label: "操作标准不清晰" }, { label: "作业指导书不清晰" }],
+      },
+      {
+        label: "设备",
+        children: [{ label: "设备老化" }, { label: "设备参数漂移" }],
       },
     ],
   },
 };
-
 export default {
   name: "OfficialAntiFishbone",
   data() {
@@ -428,7 +411,8 @@ export default {
       const baseHeight = Number(this.example.stageHeight) || 620;
       const viewportHeight = window.innerHeight || baseHeight;
       const availableHeight = (scrollShell && scrollShell.clientHeight) || 0;
-      const width = (scrollShell && scrollShell.clientWidth) || (host && host.clientWidth) || minWidth;
+      const shellWidth = (scrollShell && scrollShell.clientWidth) || (host && host.clientWidth) || 0;
+      const width = Math.max(shellWidth, minWidth);
       let height = baseHeight;
 
       if (!host || !scrollShell) {

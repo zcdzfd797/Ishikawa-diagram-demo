@@ -209,7 +209,7 @@ const example = {
   stageHeight: 780,
   behaviors: ["zoom-canvas", "drag-canvas"],
   layoutOptions: {
-    hGap: 40,
+    hGap: 44,
     vGap: 60,
     padding: 30,
     ribSep: -50,
@@ -222,66 +222,35 @@ const example = {
     leafNodeWidth: 2,
   },
   tree: {
-    label: "产品盈利能力低于预期",
+    label: "生产效率低根本原因分析",
     children: [
       {
-        label: "问题描述",
-        children: [
-          { label: "品牌销量" },
-          { label: "市场容量" },
-          { label: "品牌市场份额" },
-          { label: "总贡献毛利" },
-        ],
+        label: "环境",
+        children: [{ label: "车间湿度过高" }, { label: "车间温度波动" }],
       },
       {
-        label: "品牌定位",
-        children: [
-          { label: "包装体验" },
-          { label: "品牌名称识别度" },
-          { label: "销售价格带是否偏离目标人群预期" },
-          { label: "产品规格与使用场景匹配度" },
-        ],
+        label: "物料",
+        children: [{ label: "部分原料不合格" }, { label: "原材料批次差异" }],
       },
       {
-        label: "分销渠道",
-        children: [
-          { label: "区域覆盖" },
-          { label: "渠道结构" },
-          { label: "客户类型" },
-          { label: "销售人员覆盖质量" },
-        ],
+        label: "人员",
+        children: [{ label: "员工技能不足" }, { label: "操作员未受培训" }],
       },
       {
-        label: "市场认知",
-        children: [
-          { label: "区域投放权重" },
-          { label: "媒体组合" },
-          { label: "广告投入效率" },
-          { label: "消费者对品质的长期感知" },
-        ],
+        label: "检测",
+        children: [{ label: "检测方法误差大" }, { label: "量具误差大" }],
       },
       {
-        label: "试购转化",
-        children: [
-          { label: "门店陈列" },
-          { label: "促销类型" },
-          { label: "促销时机" },
-          { label: "供货保障" },
-        ],
+        label: "流程",
+        children: [{ label: "操作标准不清晰" }, { label: "作业指导书不清晰" }],
       },
       {
-        label: "复购表现",
-        children: [
-          { label: "消费者画像" },
-          { label: "使用场景" },
-          { label: "使用频次" },
-          { label: "因产品问题导致的退货与口碑扩散" },
-        ],
+        label: "设备",
+        children: [{ label: "设备老化" }, { label: "设备参数漂移" }],
       },
     ],
   },
 };
-
 export default {
   name: "OfficialProductFishbone",
   data() {
@@ -443,7 +412,8 @@ export default {
       const baseHeight = Number(this.example.stageHeight) || 620;
       const viewportHeight = window.innerHeight || baseHeight;
       const availableHeight = (scrollShell && scrollShell.clientHeight) || 0;
-      const width = (scrollShell && scrollShell.clientWidth) || (host && host.clientWidth) || minWidth;
+      const shellWidth = (scrollShell && scrollShell.clientWidth) || (host && host.clientWidth) || 0;
+      const width = Math.max(shellWidth, minWidth);
       let height = baseHeight;
 
       if (!host || !scrollShell) {

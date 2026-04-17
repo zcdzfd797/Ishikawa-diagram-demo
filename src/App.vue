@@ -1,6 +1,6 @@
 <template>
   <el-container class="app-shell">
-    <el-aside class="side-panel" width="276px">
+    <el-aside class="side-panel" width="208px">
       <el-scrollbar class="menu-scroll">
         <el-menu
           :default-active="activeMenu"
@@ -79,7 +79,7 @@ body {
 .main-panel {
   min-width: 0;
   height: 100%;
-  padding: 12px !important;
+  padding: 8px !important;
   background: #f5f7fa;
 }
 
